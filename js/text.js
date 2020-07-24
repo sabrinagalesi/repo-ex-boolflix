@@ -14,45 +14,66 @@
     Allarghiamo poi la ricerca anche alle serie tv. Con la stessa azione di ricerca
     dovremo prendere sia i film che corrispondono alla query, sia le serie tv, stando
     attenti ad avere alla fine dei valori simili (le serie e i film hanno campi nel JSON di
-    risposta diversi, simili ma non sempre identici) */
+    risposta diversi, simili ma non sempre identici) 
+    Font Awesome: star <i class="far fa-star"></i> vuote
+                    <i class="fas fa-star"></i> piene */
 
 
-$(document).ready(function(){
+
+function ricercaFilm(){
     var htmlTemplate = $("#contenitore-film").html();
     var compileTemplate = Handlebars.compile(htmlTemplate);
+    var valoreRicerca = $("#search-bar").val();
+    console.log(valoreRicerca);
+    $(".box-film").remove(); //Prima di generare altre ricerce, eliminiamo tutti i film cercati precedentemente
+    $.ajax({ // Faccio una chiamata ajax per cercare tutti i film che coincidono con quello che ho scritto
+        url: "https://api.themoviedb.org/3/search/movie?",
+        data: {
+            api_key: "8231200b8dfbf3e1f53605d85706f0d5",
+            language: "it-IT",
+            query: valoreRicerca,
+        },
+        success: function (success) {
+            console.log(success.results);
+            var risultatiRicerca = success.results;
+            for(var x = 0; x < risultatiRicerca.length; x++){ //Listo l'array che mi restituisce la ricerca
+                console.log(risultatiRicerca[x]);
+                var numeroStelle = Math.ceil(risultatiRicerca[x].vote_average / 2);
+                var stellePiene = "";
+                var stelleVuote = "";
+                for(var y = 0; y < numeroStelle; y++){
+                     stellePiene += '<i class="fas fa-star"></i>';
+                }
+                var vuote = 5 - numeroStelle;
+                for(var z = 0; z < vuote; z++){
+                    stelleVuote += '<i class="far fa-star"></i>'
+                }
+                var datiFilm = {
+                    titolo : risultatiRicerca[x].title,
+                    titoloOriginale: risultatiRicerca[x].original_title ,
+                    lingua: risultatiRicerca[x].original_language,
+                    voto: stellePiene + stelleVuote,
+                }
+                var htmlGenerato = compileTemplate(datiFilm);
+                $("#main-page").append(htmlGenerato);
+            }
+        },
+        error: function(error){
+            console.log(error);
+        }
+    })
+    $("#search-bar").val(""); // Resetto l'input tutte le volte che scrivo qualcosa e invio
+}
+
+$(document).ready(function(){
+
+    $("#go").click(function(){
+        ricercaFilm();
+    })
 
     $("#search-bar").keyup(function(e){ //Avviamo questa funzione una volta che abbiamo cliccato il tasto invio
         if(e.keyCode === 13){
-            $(".box-film").remove(); //Prima di generare altre ricerce, eliminiamo tutti i film cercati precedentemente
-            var valoreRicerca = $("#search-bar").val(); // Appena clicchiamo invio, mi prendo il valore dell'input
-            console.log(valoreRicerca);
-            $.ajax({ // Faccio una chiamata ajax per cercare tutti i film che coincidono con quello che ho scritto
-                url: "https://api.themoviedb.org/3/search/movie?",
-                data: {
-                    api_key: "8231200b8dfbf3e1f53605d85706f0d5",
-                    language: "it-IT",
-                    query: valoreRicerca,
-                },
-                success: function (success) {
-                    console.log(success.results);
-                    var risultatiRicerca = success.results;
-                    for(var x = 0; x < risultatiRicerca.length; x++){ //Listo l'array che mi restituisce la ricerca
-                        console.log(risultatiRicerca[x]);
-                        var datiFilm = {
-                            titolo : risultatiRicerca[x].title,
-                            titoloOriginale: risultatiRicerca[x].original_title ,
-                            lingua: risultatiRicerca[x].original_language,
-                            voto: risultatiRicerca[x].vote_average ,
-                        }
-                        var htmlGenerato = compileTemplate(datiFilm);
-                        $("#main-page").append(htmlGenerato);
-                    }
-                },
-                error: function(error){
-                    console.log(error);
-                }
-            })
-            $("#search-bar").val(""); // Resetto l'input tutte le volte che scrivo qualcosa e invio
+            ricercaFilm();
         }
     })
 })
