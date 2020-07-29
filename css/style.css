@@ -52,3 +52,20 @@
     margin-bottom: 20px;
     color: white;
 }
+
+.flag{
+    width: 20px;
+}
+
+.title{
+    text-transform: capitalize;
+}
+
+.poster:hover{
+    opacity: 0;
+    transition: 1s;
+}
+
+.information-film{
+    display: none;
+}

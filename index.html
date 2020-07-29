@@ -8,6 +8,7 @@
         <meta name="author" content="Sabry">
         <link rel="stylesheet" href="css/style.css">
         <link href="https://fonts.googleapis.com/css2?family=Fondamento&display=swap" rel="stylesheet"> 
+        <div><a href= "'https://www.flaticon.com/authors/freepik" title="Freepik"></a><a href="https://www.flaticon.com/" title="Flaticon"></a></div>
         <script src="https://kit.fontawesome.com/01d3d122a4.js" crossorigin="anonymous"></script>
         <script
 			  src="https://code.jquery.com/jquery-3.5.0.min.js"
@@ -31,18 +32,21 @@
         <div id="main-page"></div>
         <script id="contenitore-film" type="text/x-handlebars-template">
             <div class="box-film">
-                <span class="title">
-                    Titolo : {{titolo}}
-                </span>
-                <span class="title">
-                    Titolo originale :{{titoloOriginale}}
-                </span>
-                <span class="title">
-                    Lingua: {{lingua}}
-                </span>
-                <span class="title">
-                    Voto: {{{voto}}}
-                </span>
+                <img class="poster" src="{{poster}}"/>
+                <div class="information-film">
+                    <span class="title">
+                        Titolo : {{titolo}}
+                    </span>
+                    <span class="title">
+                        Titolo originale :{{titoloOriginale}}
+                    </span>
+                    <span class="title">
+                        Lingua: {{{lingua}}}
+                    </span>
+                    <span class="title">
+                        Voto: {{{voto}}}
+                    </span>
+                </div>
             </div>
         </script>
     </body>
