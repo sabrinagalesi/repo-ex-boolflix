@@ -2,17 +2,15 @@
 // Chiamate API possibili : https://developers.themoviedb.org/3​ concentrarsi su Search/Movies
 // Esempio di richiesta API : https://api.themoviedb.org/3/movie/550?api_key=8231200b8dfbf3e1f53605d85706f0d5
 
-/* MILESTONE 3
-    In questa milestone come prima cosa aggiungiamo la copertina del film o della serie
-    al nostro elenco. Ci viene passata dall’API solo la parte finale dell’URL, questo
-    perché poi potremo generare da quella porzione di URL tante dimensioni diverse.
-    Dovremo prendere quindi l’URL base delle immagini di TMDB:
-    https://image.tmdb.org/t/p/​ per poi aggiungere la dimensione che vogliamo generare
-    (troviamo tutte le dimensioni possibili a questo link:
-    https://www.themoviedb.org/talk/53c11d4ec3a3684cf4006400​ ) per poi aggiungere la
-    parte finale dell’URL passata dall’API.
-    Esempio di URL che torna la copertina di BORIS:
-    https://image.tmdb.org/t/p/w185/s2VDcsMh9ZhjFUxw77uCFDpTuXp.jpg */
+/* MILESTONE 4
+    Trasformiamo quello che abbiamo fatto fino ad ora in una vera e propria webapp,
+    creando un layout completo simil-Netflix:
+    ● Un header che contiene logo e search bar
+    ● Dopo aver ricercato qualcosa nella searchbar, i risultati appaiono sotto forma
+    di “card” in cui lo sfondo è rappresentato dall’immagine di copertina (​ consiglio
+    la poster_path con w342 ) ​
+    ● Andando con il mouse sopra una card (on hover), appaiono le informazioni
+    aggiuntive già prese nei punti precedenti più la overview */
 
 function flag(lingua){
     var bandiera="";
@@ -22,6 +20,15 @@ function flag(lingua){
         bandiera = lingua;
     }
     return bandiera
+}
+
+function poster(immagine){
+    var link= "";
+    if(immagine == null){
+        link = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Noimage.svg/739px-Noimage.svg.png";
+    } else{
+        link = "https://image.tmdb.org/t/p/w200" + immagine;
+    } return link
 }
 
 function boxInformations(success, compileTemplate){
@@ -39,6 +46,7 @@ function boxInformations(success, compileTemplate){
         for(var z = 0; z < vuote; z++){
             stelleVuote += '<i class="far fa-star"></i>'
         }
+        var immagine = risultatiRicerca[x].poster_path;
         var lingua = risultatiRicerca[x].original_language;
         var bandiera = flag(lingua);
         var datiFilm = {
@@ -46,8 +54,9 @@ function boxInformations(success, compileTemplate){
             titoloOriginale: risultatiRicerca[x].original_title || risultatiRicerca[x].original_name ,
             lingua: bandiera,
             voto: stellePiene + stelleVuote,
-            poster: "https://image.tmdb.org/t/p/w200" + risultatiRicerca[x].poster_path, 
+            poster: poster(immagine), 
         }
+        
         var htmlGenerato = compileTemplate(datiFilm);
         $("#main-page").append(htmlGenerato);
         $(".box-film").mouseenter(function(){
