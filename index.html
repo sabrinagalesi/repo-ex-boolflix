@@ -23,6 +23,9 @@
     <body>
         <div id="top-bar">
             <img id="boolflix" src="./img/logo.png"/>
+            <button id="accedi">
+                Accedi
+            </button>
             <div id="contenitor-input">
                 <input id="search-bar" placeholder="Cerca film"/>
                 <button id="go">
@@ -30,7 +33,43 @@
                 </button>
             </div>
         </div>
-        <div id="main-page"></div>
+        <div id="main-page">
+            <div id="intro">
+                <div class="box-intro flex-center">
+                    <img id="main-img" src="img/sevendeadlysins_720.jpg"/>
+                   <div class="text-intro absolute">
+                    <span class="text-maxi">
+                        Film, serie TV e tanto altro.
+                    </span>
+                    <span class="text-mini">
+                        Guarda ciò che vuoi ovunque. Disdici quando vuoi.
+                    </span>
+                   </div>
+                </div>
+                <div class="box-intro space-around">
+                    <div class="text-intro w700">
+                        <span class="text-maxi">
+                            Goditi BoolFlix sulla tua TV.
+                        </span>
+                        <span class="text-mini">
+                            Guarda BoolFlix su smart TV, Playstation, Xbox, Chromecast, Apple TV, lettori Blu-ray e molti altri dispositivi.
+                        </span>
+                    </div>
+                    <img class="img-intro" src="./img/tv.jpg"/>
+                </div>
+                <div class="box-intro space-around">
+                    <img class="img-intro" src="./img/play.jpg"/>
+                    <div class="text-intro w700">
+                        <span class="text-maxi">
+                            Guarda BoolFlix ovunque.
+                        </span>
+                        <span class="text-mini">
+                            Cellulare, tablet, laptop e TV: scegli tu cosa usare per guardare in streaming film e serie TV senza limiti e senza spendere di più.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
         <script id="contenitore-film" type="text/x-handlebars-template">
             <div class="box-film">
                 <img class="poster" src="{{poster}}"/>
@@ -46,6 +85,9 @@
                     </span>
                     <span class="title">
                         Voto: {{{voto}}}
+                    </span>
+                    <span class="title">
+                        Trama: {{overview}}
                     </span>
                 </div>
             </div>

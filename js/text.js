@@ -12,7 +12,7 @@
     ● Andando con il mouse sopra una card (on hover), appaiono le informazioni
     aggiuntive già prese nei punti precedenti più la overview */
 
-function flag(lingua){
+function flag(lingua){ //Faccio un array con dentro le lingue che posso gentire e faccio un controllo per capire (vedi includes)
     var bandiera="";
     if(lingua == "it" || lingua == "en" || lingua == "nl" || lingua == "ja" || lingua == "fr"){
         bandiera = "<img class='flag' src='./img/" + lingua + ".png'/>";
@@ -31,41 +31,56 @@ function poster(immagine){
     } return link
 }
 
+function stellePiene(numeroStelle){
+    var stellePiene = "";
+    for(var y = 0; y < numeroStelle; y++){
+        stellePiene += '<i class="fas fa-star"></i>';
+   }
+   return stellePiene;
+}
+
+function stelleVuote(numeroStelle){
+    var stelleVuote = "";
+    var vuote = 5 - numeroStelle;
+    for(var z = 0; z < vuote; z++){
+        stelleVuote += '<i class="far fa-star"></i>'
+    } return stelleVuote;
+}
+
+
 function boxInformations(success, compileTemplate){
     var risultatiRicerca = success.results;
     
     for(var x = 0; x < risultatiRicerca.length; x++){ //Listo l'array che mi restituisce la ricerca
         console.log(risultatiRicerca[x]);
         var numeroStelle = Math.ceil(risultatiRicerca[x].vote_average / 2);
-        var stellePiene = "";
-        var stelleVuote = "";
-        for(var y = 0; y < numeroStelle; y++){
-             stellePiene += '<i class="fas fa-star"></i>';
-        }
-        var vuote = 5 - numeroStelle;
-        for(var z = 0; z < vuote; z++){
-            stelleVuote += '<i class="far fa-star"></i>'
-        }
+
         var immagine = risultatiRicerca[x].poster_path;
+
         var lingua = risultatiRicerca[x].original_language;
+
         var bandiera = flag(lingua);
+
         var datiFilm = {
             titolo : risultatiRicerca[x].title || risultatiRicerca[x].name,
             titoloOriginale: risultatiRicerca[x].original_title || risultatiRicerca[x].original_name ,
             lingua: bandiera,
-            voto: stellePiene + stelleVuote,
-            poster: poster(immagine), 
+            voto: stellePiene(numeroStelle) + stelleVuote(numeroStelle),
+            poster: poster(immagine),
+            overview: risultatiRicerca[x].overview, 
         }
         
         var htmlGenerato = compileTemplate(datiFilm);
+
         $("#main-page").append(htmlGenerato);
+
         $(".box-film").mouseenter(function(){
-            $(this).find(".information-film").show();
+            $(this).find(".information-film").fadeIn();
             $(this).find(".poster").hide();
         })
         $(".box-film").mouseleave(function(){
             $(this).find(".information-film").hide();
-            $(this).find(".poster").show();
+            $(this).find(".poster").fadeIn();
         })
     };
 }
@@ -108,13 +123,19 @@ function ricercaFilm(){
 }
 
 $(document).ready(function(){
+    $("#accedi").click(function(){
+        $("#contenitor-input").slideDown();
+        $("#accedi").hide();
+    })
 
     $("#go").click(function(){
+        $("#intro").hide();
         ricercaFilm();
     })
 
     $("#search-bar").keyup(function(e){ //Avviamo questa funzione una volta che abbiamo cliccato il tasto invio
         if(e.keyCode === 13){
+            $("#intro").hide();
             ricercaFilm();
         }
     })
