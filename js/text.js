@@ -13,12 +13,17 @@
     aggiuntive già prese nei punti precedenti più la overview */
 
 function flag(lingua){ //Faccio un array con dentro le lingue che posso gentire e faccio un controllo per capire (vedi includes)
-    var bandiera="";
-    if(lingua == "it" || lingua == "en" || lingua == "nl" || lingua == "ja" || lingua == "fr"){
+    var lingueDisponibili = [
+        "it",
+        "en",
+        "nl",
+        "ja",
+        "fr"
+    ]
+    var bandiera = lingua;
+    if(lingueDisponibili.includes(lingua)){
         bandiera = "<img class='flag' src='./img/" + lingua + ".png'/>";
-    } else{
-        bandiera = lingua;
-    }
+    }  
     return bandiera
 }
 
@@ -31,21 +36,19 @@ function poster(immagine){
     } return link
 }
 
-function stellePiene(numeroStelle){
+function votoStelle(numeroStelle){
     var stellePiene = "";
     for(var y = 0; y < numeroStelle; y++){
         stellePiene += '<i class="fas fa-star"></i>';
-   }
-   return stellePiene;
-}
-
-function stelleVuote(numeroStelle){
+    }
     var stelleVuote = "";
     var vuote = 5 - numeroStelle;
-    for(var z = 0; z < vuote; z++){
+    for(var z=0; z< vuote; z++){
         stelleVuote += '<i class="far fa-star"></i>'
-    } return stelleVuote;
+    } return stellePiene + stelleVuote
 }
+
+
 
 
 function boxInformations(success, compileTemplate){
@@ -65,7 +68,7 @@ function boxInformations(success, compileTemplate){
             titolo : risultatiRicerca[x].title || risultatiRicerca[x].name,
             titoloOriginale: risultatiRicerca[x].original_title || risultatiRicerca[x].original_name ,
             lingua: bandiera,
-            voto: stellePiene(numeroStelle) + stelleVuote(numeroStelle),
+            voto: votoStelle(numeroStelle),
             poster: poster(immagine),
             overview: risultatiRicerca[x].overview, 
         }
@@ -129,12 +132,14 @@ $(document).ready(function(){
     })
 
     $("#go").click(function(){
-        $("#intro").hide();
-        ricercaFilm();
+        if($("#search-bar").val() != ""){
+            $("#intro").hide();
+            ricercaFilm();
+        }
     })
 
     $("#search-bar").keyup(function(e){ //Avviamo questa funzione una volta che abbiamo cliccato il tasto invio
-        if(e.keyCode === 13){
+        if(e.keyCode === 13 && $("#search-bar").val() != ""){
             $("#intro").hide();
             ricercaFilm();
         }
